@@ -5,12 +5,14 @@ public class User {
     private String email;
     private String password;
     private String fullName;
+    private City city;
 
-    public User(Long id, String email, String password, String fullName) {
+    public User(Long id, String email, String password, String fullName, City city) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.fullName = fullName;
+        this.city = city;
     }
 
     public User () {
@@ -47,5 +49,13 @@ public class User {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
     }
 }

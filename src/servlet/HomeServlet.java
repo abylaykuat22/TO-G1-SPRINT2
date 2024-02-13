@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Item;
+import model.User;
 
 import java.io.IOException;
 import java.util.List;
@@ -17,6 +18,8 @@ public class HomeServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<Item> items = DbManager.getItems();
         req.setAttribute("tovary", items);
-        req.getRequestDispatcher(".jsp").forward(req, resp);
+        List<User> users = DbManager.getUsers();
+        req.setAttribute("users", users);
+        req.getRequestDispatcher("home.jsp").forward(req, resp);
     }
 }

@@ -1,5 +1,7 @@
 package db;
 
+import model.City;
+import model.Country;
 import model.Item;
 import model.User;
 
@@ -81,5 +83,43 @@ public class DbManager {
             e.printStackTrace();
         }
         return user;
+    }
+
+    public static List<User> getUsers() {
+        List<User> users = new ArrayList<>();
+        try {
+            var statement = connection.prepareStatement(
+                    "SELECT u.id, u.full_name, u.email, u.city_id, c.name, c.code, c.country_id, co.name AS country_name, co.code AS country_code " +
+                            "FROM sprint2.users u " +
+                            "INNER JOIN cities c on c.id = u.city_id " +
+                            "INNER JOIN countries co on co.id = c.country_id " +
+                            "ORDER BY u.id"
+            );
+            var resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                User user = new User();
+                user.setId(resultSet.getLong("ID"));
+                user.setEmail(resultSet.getString("EMAIL"));
+                user.setFullName(resultSet.getString("FULL_NAME"));
+
+                City city = new City();
+                city.setId(resultSet.getLong("CITY_ID"));
+                city.setName(resultSet.getString("NAME"));
+                city.setCode(resultSet.getString("CODE"));
+
+                Country country = new Country();
+                country.setId(resultSet.getLong("COUNTRY_ID"));
+                country.setName(resultSet.getString("COUNTRY_NAME"));
+                country.setCode(resultSet.getString("COUNTRY_CODE"));
+                city.setCountry(country);
+
+                user.setCity(city);
+                users.add(user);
+            }
+            statement.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return users;
     }
 }
